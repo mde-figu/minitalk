@@ -6,7 +6,7 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:52:12 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/07/14 19:10:49 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 19:37:56 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	success(int sig)
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	active_act;
-
 	if (argc != 3)
 	{
 		howto();
