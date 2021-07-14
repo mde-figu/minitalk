@@ -6,7 +6,7 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:12:25 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/07/14 18:42:16 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 19:07:12 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ _Bool	handler(void)
 
 int	main(void)
 {
-	struct sigaction	act;
-	struct sigaction	oldact;
+	struct sigaction	active_act;
+	struct sigaction	null_act;
 
-	act.sa_sigaction = used_bit;
-	oldact.sa_sigaction = null_bit;
-	act.sa_flags = SA_SIGINFO;
-	oldact.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &act, NULL) != 0)
+	active_act.sa_sigaction = used_bit;
+	null_act.sa_sigaction = null_bit;
+	active_act.sa_flags = SA_SIGINFO;
+	null_act.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &active_act, NULL) != 0)
 		fail("signal from USR1 failed\n");
-	if (sigaction(SIGUSR2, &oldact, NULL) != 0)
+	if (sigaction(SIGUSR2, &null_act, NULL) != 0)
 		fail("signal from USR2 failed\n");
 	print_pid();
 	ft_bzero(g_msg.message, BUFFSIZE);
