@@ -6,11 +6,11 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 12:12:25 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/07/13 15:14:51 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 18:42:16 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "./includes/minitalk.h"
 
 void	print_pid(void)
 {
@@ -23,7 +23,75 @@ void	print_pid(void)
 	free(pid);
 }
 
+void	used_bit(int sig, siginfo_t *info, void *context)
+{
+	(void)sig;
+	(void)context;
+	(void)info;
+	if (g_msg.top_bit)
+	{
+		g_msg.top_bit = 1 << 6;
+		++(g_msg.top_byte);
+	}
+	g_msg.message[g_msg.top_byte] += g_msg.top_bit;
+	g_msg.top_bit >>= 1;
+	if (g_msg.top_byte == BUFFSIZE - 2 && !g_msg.top_bit)
+		g_msg.overflow = TRUE;
+}
+
+void	null_bit(int sig, siginfo_t *info, void *context)
+{
+	(void)sig;
+	(void)context;
+	if (!g_msg.top_bit)
+	{
+		g_msg.top_bit = 1 << 6;
+		++(g_msg.top_byte);
+	}
+	g_msg.top_bit >>= 1;
+	if (g_msg.top_byte == BUFFSIZE - 2 && !g_msg.top_bit)
+		g_msg.overflow = TRUE;
+	else if (!g_msg.message[g_msg.top_byte] && !g_msg.top_bit)
+	{
+		g_msg.ackn_all = TRUE;
+		kill(info->si_pid, SIGUSR1);
+	}
+}
+
+_Bool	handler(void)
+{
+	while (42)
+	{
+		pause();
+		if (g_msg.ackn_all || g_msg.overflow)
+		{
+			write(1, g_msg.message, ft_strlen(g_msg.message));
+			ft_bzero(g_msg.message, BUFFSIZE);
+			g_msg.top_byte = 0;
+			g_msg.top_bit = 1 << 6;
+			if (g_msg.ackn_all)
+				write(1, "\n", 1);
+			g_msg.ackn_all = FALSE;
+			g_msg.overflow = FALSE;
+		}
+	}
+	return (TRUE);
+}
+
 int	main(void)
 {
+	struct sigaction	act;
+	struct sigaction	oldact;
+
+	act.sa_sigaction = used_bit;
+	oldact.sa_sigaction = null_bit;
+	act.sa_flags = SA_SIGINFO;
+	oldact.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &act, NULL) != 0)
+		fail("signal from USR1 failed\n");
+	if (sigaction(SIGUSR2, &oldact, NULL) != 0)
+		fail("signal from USR2 failed\n");
 	print_pid();
+	ft_bzero(g_msg.message, BUFFSIZE);
+	handler();
 }

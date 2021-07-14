@@ -6,11 +6,11 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 22:30:37 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/07/12 22:31:35 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 17:03:58 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minitalk.h"
+#include "./includes/libft.h"
 
 void	fail(char *str_err)
 {

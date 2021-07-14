@@ -6,7 +6,7 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 23:09:53 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/06/25 17:33:55 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 16:34:36 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*after_point(int int_part, float float_part, int precision)
 	}
 	if (precision - int_part > 0)
 	{
-		float_part *= ft_pow(10, precision - int_part - 1);
+		float_part *= ft_pow_pos(10, precision - int_part - 1);
 		float_part = (int)float_part;
 		float_str = ft_itoa(float_part);
 	}

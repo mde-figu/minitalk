@@ -6,11 +6,11 @@
 /*   By: mde-figu <mde-figu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:52:12 by mde-figu          #+#    #+#             */
-/*   Updated: 2021/07/13 15:16:14 by mde-figu         ###   ########.fr       */
+/*   Updated: 2021/07/14 17:26:03 by mde-figu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minitalk.h"
+#include "./includes/minitalk.h"
 
 void	howto(void)
 {
@@ -35,11 +35,11 @@ void	send_char(int pid, unsigned char byte)
 				fail("wrong pid\n");
 		}
 		counter >>= 1;
-		usleep(600);
+		usleep(6000);
 	}
 }
 
-void	msg_to_pid(char *str_pid, char *message)
+void	handle(char *str_pid, char *message)
 {
 	int			pid;
 
@@ -66,6 +66,6 @@ int	main(int argc, char **argv)
 		exit (0);
 	}
 	signal(SIGUSR1, success);
-	msg_to_pid(argv[1], argv[2]);
+	handle(argv[1], argv[2]);
 	return (0);
 }
